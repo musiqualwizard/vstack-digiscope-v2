@@ -8,7 +8,6 @@ type SettingsData = {
   teamEmails: string;
   themeMode: string;
   defaultPage: string;
-  apiStatus: string;
   firebaseStatus: string;
 };
 
@@ -19,7 +18,6 @@ const defaultSettings: SettingsData = {
   teamEmails: "",
   themeMode: "Dark Gold",
   defaultPage: "Command Center",
-  apiStatus: "Connected",
   firebaseStatus: "Connected",
 };
 
@@ -41,10 +39,7 @@ export default function Settings() {
   }, []);
 
   const updateField = (key: keyof SettingsData, value: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSave = async () => {
@@ -74,8 +69,8 @@ export default function Settings() {
           <p style={styles.badge}>WORKSPACE CONTROL</p>
           <h1 style={styles.title}>Advanced Settings</h1>
           <p style={styles.subtitle}>
-            Manage your private V-Stack workspace, team access, UI preferences,
-            and connection status.
+            Manage your private V-Stack workspace, team access, interface,
+            and production status.
           </p>
         </div>
 
@@ -83,7 +78,7 @@ export default function Settings() {
           <span style={styles.statusDot}></span>
           <div>
             <strong>Signed In</strong>
-            <p>{userEmail}</p>
+            <p style={styles.userEmail}>{userEmail}</p>
           </div>
         </div>
       </div>
@@ -92,8 +87,8 @@ export default function Settings() {
         <section style={styles.card}>
           <div style={styles.cardHeader}>
             <div>
-              <h2>Workspace Profile</h2>
-              <p>Name your workspace and company identity.</p>
+              <h2 style={styles.cardTitle}>Workspace Profile</h2>
+              <p style={styles.cardText}>Name your workspace and company identity.</p>
             </div>
             <span style={styles.cardIcon}>🏢</span>
           </div>
@@ -126,8 +121,8 @@ export default function Settings() {
         <section style={styles.card}>
           <div style={styles.cardHeader}>
             <div>
-              <h2>Team Access</h2>
-              <p>Track approved emails for your private team.</p>
+              <h2 style={styles.cardTitle}>Team Access</h2>
+              <p style={styles.cardText}>Track approved emails for your private team.</p>
             </div>
             <span style={styles.cardIcon}>👥</span>
           </div>
@@ -149,8 +144,8 @@ export default function Settings() {
         <section style={styles.card}>
           <div style={styles.cardHeader}>
             <div>
-              <h2>Interface Preferences</h2>
-              <p>Control the default experience for your dashboard.</p>
+              <h2 style={styles.cardTitle}>Interface Preferences</h2>
+              <p style={styles.cardText}>Control the default dashboard experience.</p>
             </div>
             <span style={styles.cardIcon}>🎨</span>
           </div>
@@ -184,8 +179,8 @@ export default function Settings() {
         <section style={styles.card}>
           <div style={styles.cardHeader}>
             <div>
-              <h2>System Status</h2>
-              <p>Monitor the core services powering V-Stack.</p>
+              <h2 style={styles.cardTitle}>System Status</h2>
+              <p style={styles.cardText}>Monitor the core services powering V-Stack.</p>
             </div>
             <span style={styles.cardIcon}>🧠</span>
           </div>
@@ -214,8 +209,8 @@ export default function Settings() {
         <section style={{ ...styles.card, ...styles.fullCard }}>
           <div style={styles.cardHeader}>
             <div>
-              <h2>Production Checklist</h2>
-              <p>What is live now and what needs to be upgraded next.</p>
+              <h2 style={styles.cardTitle}>Production Checklist</h2>
+              <p style={styles.cardText}>What is live now and what needs upgrading next.</p>
             </div>
             <span style={styles.cardIcon}>🚀</span>
           </div>
@@ -291,6 +286,8 @@ export default function Settings() {
 const styles: { [key: string]: React.CSSProperties } = {
   page: {
     width: "100%",
+    maxWidth: 1600,
+    margin: "0 auto",
     paddingBottom: 40,
   },
 
@@ -300,6 +297,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: 24,
     alignItems: "stretch",
     marginBottom: 26,
+    flexWrap: "wrap",
   },
 
   badge: {
@@ -320,13 +318,14 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   subtitle: {
     color: "#bdbdbd",
-    maxWidth: 820,
+    maxWidth: 850,
     lineHeight: 1.6,
     margin: 0,
+    fontSize: 16,
   },
 
   userBox: {
-    minWidth: 260,
+    minWidth: 280,
     borderRadius: 22,
     border: "1px solid rgba(255,255,255,0.1)",
     background: "rgba(255,255,255,0.05)",
@@ -334,6 +333,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: "flex",
     alignItems: "center",
     gap: 12,
+  },
+
+  userEmail: {
+    margin: "4px 0 0",
+    color: "#aaa",
+    fontSize: 13,
   },
 
   statusDot: {
@@ -346,16 +351,19 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
-    gap: 20,
+    gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))",
+    gap: 24,
+    width: "100%",
   },
 
   card: {
+    width: "100%",
+    boxSizing: "border-box",
     borderRadius: 26,
     border: "1px solid rgba(255,255,255,0.1)",
     background:
       "linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
-    padding: 24,
+    padding: 26,
     boxShadow: "0 18px 45px rgba(0,0,0,0.25)",
   },
 
@@ -371,8 +379,20 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 18,
   },
 
+  cardTitle: {
+    margin: 0,
+    fontSize: 23,
+    fontWeight: 900,
+  },
+
+  cardText: {
+    margin: "6px 0 0",
+    color: "#bdbdbd",
+    lineHeight: 1.5,
+  },
+
   cardIcon: {
-    fontSize: 28,
+    fontSize: 30,
   },
 
   label: {
@@ -387,7 +407,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: "100%",
     boxSizing: "border-box",
-    padding: "14px 15px",
+    padding: "15px 16px",
     borderRadius: 14,
     border: "1px solid rgba(255,255,255,0.12)",
     background: "rgba(0,0,0,0.32)",
@@ -398,9 +418,9 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   textarea: {
     width: "100%",
-    minHeight: 132,
+    minHeight: 145,
     boxSizing: "border-box",
-    padding: "14px 15px",
+    padding: "15px 16px",
     borderRadius: 14,
     border: "1px solid rgba(255,255,255,0.12)",
     background: "rgba(0,0,0,0.32)",
@@ -426,8 +446,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: "space-between",
     gap: 14,
     alignItems: "center",
-    padding: "14px 0",
+    padding: "16px 0",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
+    fontSize: 16,
   },
 
   connected: {
@@ -447,7 +468,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   checkItem: {
     display: "flex",
     gap: 14,
-    padding: 16,
+    padding: 18,
     borderRadius: 18,
     background: "rgba(0,0,0,0.25)",
     border: "1px solid rgba(255,255,255,0.08)",
@@ -500,10 +521,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: "1px solid rgba(255,215,0,0.18)",
     background:
       "linear-gradient(135deg, rgba(255,215,0,0.11), rgba(255,255,255,0.035))",
+    flexWrap: "wrap",
   },
 
   saveButton: {
-    minWidth: 230,
+    minWidth: 250,
     padding: "15px 18px",
     borderRadius: 16,
     border: "none",
