@@ -63,7 +63,7 @@ export default function App() {
         return <Settings />;
       case "command":
       default:
-        return <AICommandCenter />;
+       return <AICommandCenter setPage={setPage} />; 
     }
   };
 

@@ -1,62 +1,35 @@
-import { useEffect, useState } from "react";
+import React from "react";
 
-type PageKey = "command" | "build" | "ailab" | "projects" | "analytics" | "vault";
+type PageKey =
+  | "command"
+  | "ailab"
+  | "buildlab"
+  | "automation"
+  | "projects"
+  | "analytics"
+  | "vault"
+  | "settings";
 
-type AnalyticsData = {
-  projects: number;
-  aiCalls: number;
-  apiHits: number;
-  errors: number;
+type Props = {
+  setPage: (page: PageKey) => void;
 };
 
-export default function AICommandCenter({
-  setPage,
-}: {
-  setPage: (page: PageKey) => void;
-}) {
-  const [analytics, setAnalytics] = useState<AnalyticsData>({
-    projects: 0,
-    aiCalls: 0,
-    apiHits: 0,
-    errors: 0,
-  });
-
-  const loadAnalytics = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/analytics");
-      const json = await res.json();
-
-      setAnalytics({
-        projects: json.projects || 0,
-        aiCalls: json.aiCalls || 0,
-        apiHits: json.apiHits || 0,
-        errors: json.errors || 0,
-      });
-    } catch (error) {
-      console.error("Command Center analytics error:", error);
-    }
-  };
-
-  useEffect(() => {
-    loadAnalytics();
-    const timer = setInterval(loadAnalytics, 2000);
-    return () => clearInterval(timer);
-  }, []);
-
+export default function AICommandCenter({ setPage }: Props) {
   return (
     <div style={styles.page}>
       <div style={styles.hero}>
         <div>
-          <p style={styles.kicker}>DigiScope Command OS</p>
+          <p style={styles.badge}>PRIVATE AI OPERATING SYSTEM</p>
           <h1 style={styles.title}>Build. Launch. Track. Grow.</h1>
           <p style={styles.subtitle}>
-            Your private AI platform for building apps, tools, analytics, and launches.
+            Your private AI platform for building apps, tools, analytics, automations,
+            and launch systems.
           </p>
         </div>
       </div>
 
-      <div style={styles.actionGrid}>
-        <button style={styles.actionCard} onClick={() => setPage("build")}>
+      <div style={styles.quickGrid}>
+        <button style={styles.actionCard} onClick={() => setPage("buildlab")}>
           <span style={styles.icon}>🚀</span>
           <strong>Start New App</strong>
           <small>Open Build Lab</small>
@@ -66,6 +39,12 @@ export default function AICommandCenter({
           <span style={styles.icon}>⚡</span>
           <strong>Generate AI Tool</strong>
           <small>Use Nova Brain</small>
+        </button>
+
+        <button style={styles.actionCard} onClick={() => setPage("automation")}>
+          <span style={styles.icon}>🤖</span>
+          <strong>Automation Lab</strong>
+          <small>Auto content, ads, and builds</small>
         </button>
 
         <button style={styles.actionCard} onClick={() => setPage("projects")}>
@@ -79,168 +58,146 @@ export default function AICommandCenter({
           <strong>View Analytics</strong>
           <small>Live growth data</small>
         </button>
+
+        <button style={styles.actionCard} onClick={() => setPage("vault")}>
+          <span style={styles.icon}>🔐</span>
+          <strong>API Vault</strong>
+          <small>Manage API keys</small>
+        </button>
+
+        <button style={styles.actionCard} onClick={() => setPage("settings")}>
+          <span style={styles.icon}>⚙️</span>
+          <strong>Settings</strong>
+          <small>Control your workspace</small>
+        </button>
       </div>
 
-      <div style={styles.grid}>
-        <Metric title="Active Builds" value={String(analytics.projects)} />
-        <Metric title="AI Runs" value={String(analytics.aiCalls)} />
-        <Metric title="API Calls" value={String(analytics.apiHits)} />
-        <Metric title="Errors" value={String(analytics.errors)} />
-      </div>
-
-      <div style={styles.bottomGrid}>
-        <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>Platform Roadmap</h2>
-          <div style={styles.listItem}>✅ Local Nova Brain online</div>
-          <div style={styles.listItem}>✅ Analytics connected</div>
-          <div style={styles.listItem}>🟡 Build Lab expansion</div>
-          <div style={styles.listItem}>🟡 Project memory system</div>
-          <div style={styles.listItem}>🔜 Offline LLM upgrade</div>
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <h2>0</h2>
+          <p>Active Builds</p>
         </div>
 
-        <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>Nova Status</h2>
-          <div style={styles.statusBubble}>
-            {analytics.errors === 0 ? "ONLINE" : "CHECK ERRORS"}
-          </div>
-          <p style={styles.statusText}>
-            V-Stack is running locally and ready to build with DigiScope.
-          </p>
+        <div style={styles.statCard}>
+          <h2>0</h2>
+          <p>AI Runs</p>
+        </div>
+
+        <div style={styles.statCard}>
+          <h2>0</h2>
+          <p>API Calls</p>
+        </div>
+
+        <div style={styles.statCard}>
+          <h2>0</h2>
+          <p>Automations</p>
+        </div>
+
+        <div style={styles.statCard}>
+          <h2>0</h2>
+          <p>Errors</p>
         </div>
       </div>
     </div>
   );
 }
 
-function Metric({ title, value }: { title: string; value: string }) {
-  return (
-    <div style={styles.metric}>
-      <div style={styles.metricValue}>{value}</div>
-      <div style={styles.metricTitle}>{title}</div>
-    </div>
-  );
-}
-
-const styles = {
+const styles: { [key: string]: React.CSSProperties } = {
   page: {
     width: "100%",
-    maxWidth: "100%",
-    margin: 0,
-    boxSizing: "border-box" as const,
   },
+
   hero: {
     width: "100%",
-    minHeight: "220px",
-    borderRadius: "28px",
-    padding: "36px",
-    boxSizing: "border-box" as const,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
+    minHeight: 190,
+    borderRadius: 30,
+    padding: 34,
+    boxSizing: "border-box",
     background:
-      "linear-gradient(135deg, rgba(37,99,235,0.95), rgba(124,58,237,0.75), rgba(2,6,23,0.85))",
-    border: "1px solid rgba(255,255,255,0.15)",
-    boxShadow: "0 25px 80px rgba(37,99,235,0.28)",
-    marginBottom: "26px",
+      "linear-gradient(135deg, rgba(79,70,229,0.95), rgba(17,24,39,0.95)), radial-gradient(circle at top right, rgba(255,215,0,0.35), transparent 35%)",
+    border: "1px solid rgba(255,255,255,0.13)",
+    boxShadow: "0 24px 80px rgba(0,0,0,0.35)",
+    marginBottom: 26,
   },
-  kicker: {
+
+  badge: {
     margin: 0,
-    color: "#facc15",
+    color: "#ffd76a",
+    fontSize: 12,
     fontWeight: 900,
-    letterSpacing: "1px",
-    textTransform: "uppercase" as const,
+    letterSpacing: 1.4,
   },
+
   title: {
-    margin: "10px 0",
-    fontSize: "46px",
-    lineHeight: 1,
+    margin: "10px 0 8px",
+    fontSize: "clamp(38px, 5vw, 72px)",
+    lineHeight: 0.95,
     fontWeight: 950,
+    letterSpacing: -2,
+    color: "#ffffff",
   },
+
   subtitle: {
-    maxWidth: "720px",
+    maxWidth: 760,
+    color: "#d6d6ff",
+    fontSize: 17,
+    lineHeight: 1.6,
     margin: 0,
-    fontSize: "17px",
-    color: "rgba(255,255,255,0.78)",
+    fontWeight: 600,
   },
-  actionGrid: {
+
+  quickGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "18px",
-    marginBottom: "24px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: 18,
+    marginBottom: 26,
   },
+
   actionCard: {
-    minHeight: "140px",
-    padding: "22px",
-    borderRadius: "24px",
-    border: "1px solid rgba(255,255,255,0.14)",
-    background: "rgba(255,255,255,0.08)",
-    color: "white",
+    minHeight: 128,
+    borderRadius: 24,
+    border: "1px solid rgba(255,255,255,0.1)",
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035))",
+    color: "#fff",
+    padding: 22,
+    textAlign: "left",
     cursor: "pointer",
-    textAlign: "left" as const,
+    boxShadow: "0 18px 45px rgba(0,0,0,0.28)",
     display: "flex",
-    flexDirection: "column" as const,
-    gap: "8px",
-    boxShadow: "0 15px 40px rgba(0,0,0,0.28)",
+    flexDirection: "column",
+    justifyContent: "center",
+    transition: "transform 0.15s ease, border 0.15s ease",
   },
+
   icon: {
-    fontSize: "26px",
+    fontSize: 26,
+    marginBottom: 12,
   },
-  grid: {
+
+  statsGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-    gap: "18px",
-    marginBottom: "24px",
+    gap: 18,
   },
-  metric: {
-    padding: "26px",
-    borderRadius: "24px",
-    background: "rgba(255,255,255,0.07)",
-    border: "1px solid rgba(255,255,255,0.13)",
-    boxShadow: "0 15px 40px rgba(0,0,0,0.22)",
+
+  statCard: {
+    borderRadius: 24,
+    border: "1px solid rgba(255,255,255,0.1)",
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
+    padding: 24,
+    textAlign: "center",
+    boxShadow: "0 18px 45px rgba(0,0,0,0.25)",
   },
-  metricValue: {
-    fontSize: "42px",
-    fontWeight: 950,
-    color: "#38bdf8",
-  },
-  metricTitle: {
-    marginTop: "8px",
-    opacity: 0.75,
-    fontWeight: 800,
-  },
-  bottomGrid: {
-    display: "grid",
-    gridTemplateColumns: "2fr 1fr",
-    gap: "18px",
-  },
-  panel: {
-    padding: "28px",
-    borderRadius: "24px",
-    background: "rgba(255,255,255,0.07)",
-    border: "1px solid rgba(255,255,255,0.13)",
-    boxShadow: "0 15px 40px rgba(0,0,0,0.22)",
-  },
-  panelTitle: {
-    marginTop: 0,
-  },
-  listItem: {
-    padding: "12px 0",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    fontWeight: 700,
-    color: "rgba(255,255,255,0.82)",
-  },
-  statusBubble: {
-    display: "inline-block",
-    padding: "10px 18px",
-    borderRadius: "999px",
-    background: "rgba(34,197,94,0.18)",
-    border: "1px solid rgba(34,197,94,0.45)",
-    color: "#4ade80",
-    fontWeight: 950,
-    letterSpacing: "1px",
-  },
-  statusText: {
-    lineHeight: 1.6,
-    color: "rgba(255,255,255,0.75)",
-  },
+
+  h2: {},
+
+  statNumber: {},
+
+  strong: {},
+
+  small: {},
+
+  statText: {},
 };
