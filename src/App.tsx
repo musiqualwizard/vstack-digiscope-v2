@@ -13,11 +13,20 @@ import BuildLab from "./pages/BuildLab";
 import AutomationLab from "./pages/AutomationLab";
 import Settings from "./pages/Settings";
 
-type PageKey =
+import ImageGenerator from "./pages/ImageGenerator";
+import VideoGenerator from "./pages/VideoGenerator";
+import AdVideoGenerator from "./pages/AdVideoGenerator";
+import VoiceLipSyncStudio from "./pages/VoiceLipSyncStudio";
+
+export type PageKey =
   | "command"
   | "ailab"
   | "buildlab"
   | "automation"
+  | "imagegen"
+  | "videogen"
+  | "adgen"
+  | "voicegen"
   | "projects"
   | "analytics"
   | "vault"
@@ -53,6 +62,14 @@ export default function App() {
         return <BuildLab />;
       case "automation":
         return <AutomationLab />;
+      case "imagegen":
+        return <ImageGenerator />;
+      case "videogen":
+        return <VideoGenerator />;
+      case "adgen":
+        return <AdVideoGenerator />;
+      case "voicegen":
+        return <VoiceLipSyncStudio />;
       case "projects":
         return <Projects />;
       case "analytics":
@@ -63,7 +80,7 @@ export default function App() {
         return <Settings />;
       case "command":
       default:
-       return <AICommandCenter setPage={setPage} />; 
+        return <AICommandCenter setPage={setPage} />;
     }
   };
 
@@ -107,6 +124,26 @@ export default function App() {
             <button style={navBtn(page === "automation")} onClick={() => setPage("automation")}>
               🤖 Automation Lab
             </button>
+
+            <div style={styles.navSection}>Creative Studio</div>
+
+            <button style={navBtn(page === "imagegen")} onClick={() => setPage("imagegen")}>
+              🎨 Image Generator
+            </button>
+
+            <button style={navBtn(page === "videogen")} onClick={() => setPage("videogen")}>
+              🎬 Video Generator
+            </button>
+
+            <button style={navBtn(page === "adgen")} onClick={() => setPage("adgen")}>
+              📢 Ad Video Generator
+            </button>
+
+            <button style={navBtn(page === "voicegen")} onClick={() => setPage("voicegen")}>
+              🎙️ Voice + Lip Sync
+            </button>
+
+            <div style={styles.navSection}>Workspace</div>
 
             <button style={navBtn(page === "projects")} onClick={() => setPage("projects")}>
               📁 Projects
@@ -216,8 +253,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 
   sidebar: {
-    width: 285,
-    minWidth: 285,
+    width: 300,
+    minWidth: 300,
     height: "100vh",
     background:
       "linear-gradient(180deg, rgba(8,8,8,0.98), rgba(4,4,4,0.98))",
@@ -229,6 +266,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: "space-between",
     position: "sticky",
     top: 0,
+    overflowY: "auto",
   },
 
   brandBox: {
@@ -255,9 +293,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: 24,
   },
 
+  navSection: {
+    margin: "18px 0 10px",
+    color: "#777",
+    fontSize: 11,
+    fontWeight: 900,
+    letterSpacing: 1.2,
+    textTransform: "uppercase",
+  },
+
   bottomBox: {
     borderTop: "1px solid rgba(255,255,255,0.08)",
     paddingTop: 16,
+    marginTop: 20,
   },
 
   statusBox: {
@@ -305,7 +353,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   pageShell: {
     width: "100%",
-    maxWidth: 1500,
+    maxWidth: 1600,
     margin: "0 auto",
   },
 };
